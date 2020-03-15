@@ -37,7 +37,7 @@ steps:
   displayName: 'Write build info'
   workingDirectory: $(wwwrootDir)
 
-- script: 'echo Build.Reason("$(Build.Reason)), System.PullRequest.TargetBranch ($(System.PullRequest.TargetBranch))" '
+- script: 'echo "Build.Reason ($(Build.Reason)), System.PullRequest.TargetBranch ($(System.PullRequest.TargetBranch))" '
   displayName: 'Write Build Vars'
   workingDirectory: $(wwwrootDir)
 
