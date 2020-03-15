@@ -10,6 +10,7 @@ variables:
   buildConfiguration: 'Release'
   wwwrootDir: 'Tailspin.SpaceGame.Web/wwwroot'
   dotnetSdkVersion: '3.1.100'
+  ExecuteSonarCloud: true
 
 steps:
 - task: UseDotNet@2
@@ -37,6 +38,10 @@ steps:
   displayName: 'Write build info'
   workingDirectory: $(wwwrootDir)
 
+- script: 'echo "Build.Reason ($(Build.Reason)), System.PullRequest.TargetBranch ($(System.PullRequest.TargetBranch))" '
+  displayName: 'Write Build Vars'
+  workingDirectory: $(wwwrootDir)
+
 - task: DotNetCoreCLI@2
   displayName: 'Restore project dependencies'
   inputs:
@@ -58,10 +63,8 @@ steps:
     and
     (
       succeeded(),
-      eq(variables['Build.Reason'], 'PullRequest'),
-      eq(variables['System.PullRequest.TargetBranch'], 'master')
+      variables['ExecuteSonarCloud']
     )
-
 - task: DotNetCoreCLI@2
   displayName: 'Build the project - $(buildConfiguration)'
   inputs:
@@ -94,8 +97,7 @@ steps:
     and
     (
       succeeded(),
-      eq(variables['Build.Reason'], 'PullRequest'),
-      eq(variables['System.PullRequest.TargetBranch'], 'master')
+      variables['ExecuteSonarCloud']
     )
  
 - task: SonarCloudPublish@1
@@ -104,9 +106,9 @@ steps:
     and
     (
       succeeded(),
-      eq(variables['Build.Reason'], 'PullRequest'),
-      eq(variables['System.PullRequest.TargetBranch'], 'master')
+      variables['ExecuteSonarCloud']
     )
+  
 
 - task: PublishCodeCoverageResults@1
   displayName: 'Publish code coverage report'
