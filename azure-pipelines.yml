@@ -63,7 +63,7 @@ steps:
     and
     (
       succeeded(),
-      $(ExecuteSonarCloud)
+      variables['ExecuteSonarCloud']
     )
 - task: DotNetCoreCLI@2
   displayName: 'Build the project - $(buildConfiguration)'
@@ -97,7 +97,7 @@ steps:
     and
     (
       succeeded(),
-      $(ExecuteSonarCloud)
+      variables['ExecuteSonarCloud']
     )
  
 - task: SonarCloudPublish@1
@@ -106,7 +106,7 @@ steps:
     and
     (
       succeeded(),
-      $(ExecuteSonarCloud)
+      variables['ExecuteSonarCloud']
     )
   
 
