@@ -59,7 +59,12 @@ steps:
     extraProperties: |
      sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/TestResults/Coverage/coverage.opencover.xml
      sonar.exclusions=**/wwwroot/lib/**/*
-  condition: succeeded() and $(ExecuteSonarCloud)
+  condition: |
+    and
+    (
+      succeeded(),
+      $(ExecuteSonarCloud)
+    )
 - task: DotNetCoreCLI@2
   displayName: 'Build the project - $(buildConfiguration)'
   inputs:
@@ -88,11 +93,22 @@ steps:
 
 - task: SonarCloudAnalyze@1
   displayName: 'Run SonarCloud code analysis'
-  condition: succeeded() and $(ExecuteSonarCloud)
+  condition: |
+    and
+    (
+      succeeded(),
+      $(ExecuteSonarCloud)
+    )
  
 - task: SonarCloudPublish@1
   displayName: 'Publish SonarCloud quality gate results'
-  condition: succeeded() and $(ExecuteSonarCloud)
+  condition: |
+    and
+    (
+      succeeded(),
+      $(ExecuteSonarCloud)
+    )
+  
 
 - task: PublishCodeCoverageResults@1
   displayName: 'Publish code coverage report'
